@@ -17,9 +17,6 @@ ENV DEBIAN_FRONTEND=noninteractive HOME="/root" TERM=xterm APACHE_RUN_USER=www-d
 
 CMD ["/sbin/my_init"]
 
-# add local files
-ADD src/ /root/
-
 # fix a Debianism of the nobody's uid being 65534
 RUN usermod -u 99 nobody && \
 usermod -g 100 nobody && \
