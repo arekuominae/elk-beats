@@ -30,7 +30,7 @@ chmod +x /etc/my_init.d/firstrun.sh && \
 
 # Enable apache mods.
 a2enmod php5 && \
-a2enmod rewrite && \
+a2enmod rewrite
 
 # Update the PHP.ini file, enable <? ?> tags and quieten logging.
 sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/apache2/php.ini && \
