@@ -30,12 +30,12 @@ chmod +x /etc/my_init.d/firstrun.sh && \
 
 # Enable apache mods.
 a2enmod php5 && \
-a2enmod rewrite
+a2enmod rewrite && \
 
 # Update the PHP.ini file, enable <? ?> tags and quieten logging.
 sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/apache2/php.ini && \
 sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php5/apache2/php.ini && \
-mv /root/apache-config.conf /etc/apache2/sites-enabled/000-default.conf \
+mv /root/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 ###############################################################################
 #                                INSTALLATION
