@@ -32,8 +32,6 @@ RUN apt-get update -qq \
  && apt-get install -qqy \
 		elasticsearch \
 		openjdk-7-jdk \
- && apt-get clean
-
 
 ### install Logstash
 
