@@ -31,7 +31,7 @@ RUN echo deb https://packages.elastic.co/beats/apt stable main > /etc/apt/source
 RUN apt-get update -qq \
  && apt-get install -qqy \
 		elasticsearch \
-		openjdk-7-jdk \
+		openjdk-7-jdk
 
 ### install Logstash
 
