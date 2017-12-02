@@ -1,5 +1,5 @@
 # Dockerfile for ELK stack
-# Elasticsearch 2.1.1, Logstash 2.1.1, Kibana 4.3.1
+# Elasticsearch 6.0, Logstash 6.0, Kibana 6.0
 
 # Build with:
 # docker build -t <repo-user>/elk .
@@ -12,6 +12,28 @@ MAINTAINER Thomas Cooper http://www.rackdeploy.com
 # Built on the original sebp/elk by Sebastien Pujadas http://pujadas.net
 ENV REFRESHED_AT 2016-01-23
 
+# set environment variables
+ENV DEBIAN_FRONTEND=noninteractive HOME="/root" TERM=xterm APACHE_RUN_USER=www-data APACHE_RUN_GROUP=www-data APACHE_LOG_DIR="/var/log/apache2" APACHE_LOCK_DIR="/var/lock/apache2" APACHE_PID_FILE="/var/run/apache2.pid"
+
+CMD ["/sbin/my_init"]
+
+# add local files
+ADD src/ /root/
+
+# fix a Debianism of the nobody's uid being 65534
+RUN usermod -u 99 nobody && \
+usermod -g 100 nobody && \
+
+# set startup files
+mkdir -p /etc/service/apache && \
+mv /root/apache.sh /etc/service/apache/run && \
+chmod +x /etc/service/apache/run && \
+mv /root/firstrun.sh /etc/my_init.d/firstrun.sh && \
+chmod +x /etc/my_init.d/firstrun.sh && \
+
+# Enable apache mods.
+a2enmod php5 && \
+a2enmod rewrite && \
 
 ###############################################################################
 #                                INSTALLATION
@@ -120,6 +142,9 @@ RUN chmod +x /usr/local/bin/timezone_fix
 
 ADD ./start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
+
+# clean up
+apt-get clean &&
 
 # OLD EXPOSE 5601 9200 9300 5000 5044
 EXPOSE 80/tcp 5140/udp 9200/tcp 9300 5000 5044
