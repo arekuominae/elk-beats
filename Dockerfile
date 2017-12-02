@@ -23,8 +23,8 @@ RUN apt-get update -qq \
  && apt-get install -qqy curl \
  && apt-get install apt-transport-https
 
-RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-RUN echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+RUN echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
 # OLD RUN echo deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main > /etc/apt/sources.list.d/elasticsearch-2.x.list
 RUN echo deb https://packages.elastic.co/beats/apt stable main > /etc/apt/sources.list.d/beats.list
 
