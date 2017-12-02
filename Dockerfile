@@ -18,24 +18,24 @@ ENV DEBIAN_FRONTEND=noninteractive HOME="/root" TERM=xterm APACHE_RUN_USER=www-d
 CMD ["/sbin/my_init"]
 
 # fix a Debianism of the nobody's uid being 65534
-RUN usermod -u 99 nobody && \
-usermod -g 100 nobody && \
+RUN usermod -u 99 nobody \
+&& usermod -g 100 nobody
 
 # set startup files
-mkdir -p /etc/service/apache && \
-mv /root/apache.sh /etc/service/apache/run && \
-chmod +x /etc/service/apache/run && \
-mv /root/firstrun.sh /etc/my_init.d/firstrun.sh && \
-chmod +x /etc/my_init.d/firstrun.sh && \
+RUN mkdir -p /etc/service/apache \
+&& mv /root/apache.sh /etc/service/apache/run \
+&& chmod +x /etc/service/apache/run \
+&& mv /root/firstrun.sh /etc/my_init.d/firstrun.sh \
+&& chmod +x /etc/my_init.d/firstrun.sh
 
 # Enable apache mods.
-a2enmod php5 && \
-a2enmod rewrite && \
+RUN a2enmod php5 \
+&& a2enmod rewrite 
 
 # Update the PHP.ini file, enable <? ?> tags and quieten logging.
-sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/apache2/php.ini && \
-sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php5/apache2/php.ini && \
-mv /root/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/apache2/php.ini \
+&& sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php5/apache2/php.ini \
+&& mv /root/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 ###############################################################################
 #                                INSTALLATION
