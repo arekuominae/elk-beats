@@ -20,8 +20,7 @@ ENV REFRESHED_AT 2016-01-23
 ### install Elasticsearch
 
 RUN apt-get update -qq \
- && apt-get install -qqy curl
- && apt-get install apt-transport-https
+ && apt-get install apt-transport-https -qqy curl
 
 RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 RUN echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
