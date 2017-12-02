@@ -143,9 +143,6 @@ RUN chmod +x /usr/local/bin/timezone_fix
 ADD ./start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-# clean up
-apt-get clean &&
-
 # OLD EXPOSE 5601 9200 9300 5000 5044
 EXPOSE 80/tcp 5140/udp 9200/tcp 9300 5000 5044
 VOLUME /var/lib/elasticsearch
