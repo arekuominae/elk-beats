@@ -21,9 +21,11 @@ ENV REFRESHED_AT 2016-01-23
 
 RUN apt-get update -qq \
  && apt-get install -qqy curl
+ && apt-get install apt-transport-https
 
-RUN curl http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
-RUN echo deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main > /etc/apt/sources.list.d/elasticsearch-2.x.list
+RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+RUN echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+# OLD RUN echo deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main > /etc/apt/sources.list.d/elasticsearch-2.x.list
 RUN echo deb https://packages.elastic.co/beats/apt stable main > /etc/apt/sources.list.d/beats.list
 
 RUN apt-get update -qq \
@@ -36,10 +38,13 @@ RUN apt-get update -qq \
 ### install Logstash
 
 ENV LOGSTASH_HOME /opt/logstash
-ENV LOGSTASH_PACKAGE logstash-2.1.1.tar.gz
+ENV LOGSTASH_PACKAGE logstash-6.0.0.tar.gz
 
-RUN mkdir ${LOGSTASH_HOME} \
- && curl -O https://download.elasticsearch.org/logstash/logstash/${LOGSTASH_PACKAGE} \
+#OLD ENV LOGSTASH_PACKAGE logstash-6.0.0.tar.gz
+
+RUN mkdir ${LOGSTASH_HOME} \ 
+ #OLD && curl -O https://download.elasticsearch.org/logstash/logstash/${LOGSTASH_PACKAGE} \
+ && curl -O https://artifacts.elastic.co/downloads/logstash/${LOGSTASH_PACKAGE} \
  && tar xzf ${LOGSTASH_PACKAGE} -C ${LOGSTASH_HOME} --strip-components=1 \
  && rm -f ${LOGSTASH_PACKAGE} \
  && groupadd -r logstash \
@@ -55,10 +60,14 @@ RUN sed -i -e 's#^LS_HOME=$#LS_HOME='$LOGSTASH_HOME'#' /etc/init.d/logstash \
 ### install Kibana
 
 ENV KIBANA_HOME /opt/kibana
-ENV KIBANA_PACKAGE kibana-4.3.1-linux-x64.tar.gz
+ENV KIBANA_PACKAGE kibana-6.0.0-linux-x86_64.tar.gz
+# OLD ENV KIBANA_PACKAGE kibana-4.3.1-linux-x64.tar.gz
+
 
 RUN mkdir ${KIBANA_HOME} \
- && curl -O https://download.elasticsearch.org/kibana/kibana/${KIBANA_PACKAGE} \
+curl -O https://artifacts.elastic.co/downloads/kibana/kibana-6.0.0-darwin-x86_64.tar.gz
+ # OLD && curl -O https://download.elasticsearch.org/kibana/kibana/${KIBANA_PACKAGE} \
+ && curl -O https://artifacts.elastic.co/downloads/kibana/${KIBANA_PACKAGE} \
  && tar xzf ${KIBANA_PACKAGE} -C ${KIBANA_HOME} --strip-components=1 \
  && rm -f ${KIBANA_PACKAGE} \
  && groupadd -r kibana \
@@ -115,7 +124,8 @@ RUN chmod +x /usr/local/bin/timezone_fix
 ADD ./start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-EXPOSE 5601 9200 9300 5000 5044
+#OLD EXPOSE 5601 9200 9300 5000 5044
+EXPOSE 80/tcp 5140/udp 9200/tcp 9300 5000 5044
 VOLUME /var/lib/elasticsearch
 
 CMD [ "/usr/local/bin/start.sh" ]
