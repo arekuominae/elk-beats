@@ -40,10 +40,10 @@ RUN apt-get update -qq \
 ENV LOGSTASH_HOME /opt/logstash
 ENV LOGSTASH_PACKAGE logstash-6.0.0.tar.gz
 
-#OLD ENV LOGSTASH_PACKAGE logstash-6.0.0.tar.gz
+# OLD ENV LOGSTASH_PACKAGE logstash-6.0.0.tar.gz
 
 RUN mkdir ${LOGSTASH_HOME} \ 
- #OLD && curl -O https://download.elasticsearch.org/logstash/logstash/${LOGSTASH_PACKAGE} \
+ # OLD && curl -O https://download.elasticsearch.org/logstash/logstash/${LOGSTASH_PACKAGE} \
  && curl -O https://artifacts.elastic.co/downloads/logstash/${LOGSTASH_PACKAGE} \
  && tar xzf ${LOGSTASH_PACKAGE} -C ${LOGSTASH_HOME} --strip-components=1 \
  && rm -f ${LOGSTASH_PACKAGE} \
@@ -65,7 +65,6 @@ ENV KIBANA_PACKAGE kibana-6.0.0-linux-x86_64.tar.gz
 
 
 RUN mkdir ${KIBANA_HOME} \
-curl -O https://artifacts.elastic.co/downloads/kibana/kibana-6.0.0-darwin-x86_64.tar.gz
  # OLD && curl -O https://download.elasticsearch.org/kibana/kibana/${KIBANA_PACKAGE} \
  && curl -O https://artifacts.elastic.co/downloads/kibana/${KIBANA_PACKAGE} \
  && tar xzf ${KIBANA_PACKAGE} -C ${KIBANA_HOME} --strip-components=1 \
@@ -124,7 +123,7 @@ RUN chmod +x /usr/local/bin/timezone_fix
 ADD ./start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-#OLD EXPOSE 5601 9200 9300 5000 5044
+# OLD EXPOSE 5601 9200 9300 5000 5044
 EXPOSE 80/tcp 5140/udp 9200/tcp 9300 5000 5044
 VOLUME /var/lib/elasticsearch
 
